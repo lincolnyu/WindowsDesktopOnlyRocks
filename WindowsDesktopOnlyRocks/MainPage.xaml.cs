@@ -21,13 +21,23 @@ namespace WindowsDesktopOnlyRocks
 
         private async void OnClipboardChanged(object sender, object e)
         {
-            var dp = Clipboard.GetContent();
-            if (dp.Contains(StandardDataFormats.Text))
+            for (var a = 0; a < 1000; a++)
             {
-                var txt = await dp.GetTextAsync();
-                if (txt != TargetUrl.Text)
+                try
                 {
-                    MobUrl.Text = txt;
+                    var dp = Clipboard.GetContent();
+                    if (dp.Contains(StandardDataFormats.Text))
+                    {
+                        var txt = await dp.GetTextAsync();
+                        if (txt != TargetUrl.Text)
+                        {
+                            MobUrl.Text = txt;
+                        }
+                    }
+                    break;
+                }
+                catch (Exception)
+                {
                 }
             }
         }
@@ -56,9 +66,9 @@ namespace WindowsDesktopOnlyRocks
             var succeeded = false;
             target = "";
             remarks = "";
-            if (mob.Contains("taobao"))
+            if (mob.Contains("taobao") || mob.Contains("tmall"))
             {
-                var regex = new Regex("[?&]id=([0-9]+)");
+                var regex = new Regex(@"[?&]id=([0-9]+)");
                 var match = regex.Match(mob);
                 if (match.Success)
                 {
@@ -76,7 +86,7 @@ namespace WindowsDesktopOnlyRocks
             }
             else if (mob.Contains("youku"))
             {
-                var regex = new Regex("id_([0-9A-Za-z=]+)");
+                var regex = new Regex(@"id_([0-9A-Za-z=]+)");
                 var match = regex.Match(mob);
                 if (match.Success)
                 {
