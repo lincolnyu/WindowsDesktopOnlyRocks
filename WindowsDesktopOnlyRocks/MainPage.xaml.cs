@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml.Controls;
 
@@ -16,12 +17,22 @@ namespace WindowsDesktopOnlyRocks
         {
             InitializeComponent();
 
+            Initialize();
+        }
+
+        private async void Initialize()
+        {
+            await LoadInputFromClipboard();
+            OnSourceUrlTextChanged(null, null);
+
             Clipboard.ContentChanged += OnClipboardChanged;
         }
 
-        private async void OnClipboardChanged(object sender, object e)
+        private async Task LoadInputFromClipboard()
         {
-            for (var a = 0; a < 1000; a++)
+            const int MaxAttemptedSeconds = 2;
+            var start = DateTime.UtcNow;
+            for (; DateTime.UtcNow - start < TimeSpan.FromSeconds(MaxAttemptedSeconds); )
             {
                 try
                 {
@@ -40,6 +51,11 @@ namespace WindowsDesktopOnlyRocks
                 {
                 }
             }
+        }
+
+        private async void OnClipboardChanged(object sender, object e)
+        {
+            await LoadInputFromClipboard();
         }
 
         private void OnSourceUrlTextChanged(object sender, TextChangedEventArgs e)
