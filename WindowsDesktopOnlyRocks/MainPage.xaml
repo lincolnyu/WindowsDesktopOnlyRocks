@@ -5,16 +5,17 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    Width="800" Height="500"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Grid>
-        <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="20,0,20,0">
-            <TextBlock>Mob URL 移动地址：</TextBlock>
+        <StackPanel Orientation="Vertical" Margin="20,20,20,0">
+            <TextBlock>Mob URL 移设地址：</TextBlock>
             <TextBox Name="MobUrl" TextChanged="OnSourceUrlTextChanged" 
                      ToolTipService.ToolTip="Mob url (clipboard capture supported) 移设链接（支持剪贴板捕获）">
             </TextBox>
             <TextBlock>Converted Desktop URL （估计）桌面地址：</TextBlock>
             <TextBox Name="TargetUrl"  IsReadOnly="True"></TextBox>
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,5">
                 <Button Name="CopyUrl" Click="OnCopyUrlClicked">Copy Desktop URL 复制桌面地址</Button>
                 <Button Name="OpenInBrowser" Margin="5,0,0,0" Click="OnOpenInBrowserClicked">Open Desktop URL in Browser 在浏览器中打开地址</Button>
             </StackPanel>
