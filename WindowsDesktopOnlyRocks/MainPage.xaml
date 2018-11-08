@@ -19,7 +19,7 @@
                 <Button Name="OpenInBrowser" Margin="5,0,0,0" Click="OnOpenInBrowserClicked">Open Desktop URL in Browser 在浏览器中打开地址</Button>
             </StackPanel>
             <TextBlock>Remarks 说明：</TextBlock>
-            <TextBox Name="Remarks" IsReadOnly="True" AcceptsReturn="True"></TextBox>
+            <TextBox Name="Remarks" IsReadOnly="True" AcceptsReturn="True" BorderThickness="0"></TextBox>
         </StackPanel>
     </Grid>
 </Page>

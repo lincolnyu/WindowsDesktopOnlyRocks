@@ -77,12 +77,18 @@ namespace WindowsDesktopOnlyRocks
             OpenInBrowser.IsEnabled = res;
         }
 
+        private static bool isMobOf(string url, string shortName)
+        {
+            var regex = new Regex($@"https*://[^/]*{shortName}\..*|[^/]*{shortName}\..*");
+            return regex.Match(url).Success;
+        }
+
         private bool Convert(string mob, out string target, out string remarks)
         {
             var succeeded = false;
             target = "";
             remarks = "";
-            if (mob.Contains("taobao") || mob.Contains("tmall"))
+            if (isMobOf(mob, "taobao") || isMobOf(mob, "tmall"))
             {
                 var regex = new Regex(@"[?&]id=([0-9]+)");
                 var match = regex.Match(mob);
@@ -100,7 +106,7 @@ namespace WindowsDesktopOnlyRocks
                     remarks = "Unrecognized taobao url.\n无法识别的淘宝链接。";
                 }
             }
-            else if (mob.Contains("youku"))
+            else if (isMobOf(mob, "youku"))
             {
                 var regex = new Regex(@"id_([0-9A-Za-z=]+)");
                 var match = regex.Match(mob);
@@ -118,6 +124,14 @@ namespace WindowsDesktopOnlyRocks
                     remarks = "Unrecognized youku url.\n无法识别的优酷链接。";
                 }
             }
+            else if (isMobOf(mob, "facebook"))
+            {
+                remarks = "Successfully converted to desktop url from facebook mob url.\n"
+                    + "尝试将脸书移设链接转换为桌面链接完成。";
+                target = mob.Replace("m.facebook", "www.facebook");
+                succeeded = true;
+            }
+            // TODO a generic treatment ?...
             else if (string.IsNullOrWhiteSpace(mob))
             {
                 remarks = "Please provide mob url (link copied to clipboard will be captured).\n"
