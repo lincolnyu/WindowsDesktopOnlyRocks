@@ -141,6 +141,12 @@
       <Version>6.1.9</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WindorLib\WindorLib.csproj">
+      <Project>{735CC8F3-00CB-49B0-ADC1-BD2F2B1047F3}</Project>
+      <Name>WindorLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

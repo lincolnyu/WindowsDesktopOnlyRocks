@@ -53,5 +53,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WindorLib\WindorLib.csproj">
+      <Project>{735CC8F3-00CB-49B0-ADC1-BD2F2B1047F3}</Project>
+      <Name>WindorLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
