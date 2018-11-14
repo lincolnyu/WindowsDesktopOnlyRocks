@@ -21,7 +21,14 @@ namespace handywin
         [STAThread]
         static void Main(string[] args)
         {
-            if (Clipboard.ContainsText())
+            if (Clipboard.ContainsImage())
+            {
+                Process.Start("microsoft-edge:http://images.bing.com");
+                // TODO: more advanced stuff
+                // https://stackoverflow.com/questions/1163761/capture-screenshot-of-active-window
+                // ...
+            }
+            else if (Clipboard.ContainsText())
             {
                 var text = Clipboard.GetText();
                 if (MobUrls.Convert(text, out var target, out var remarks))
