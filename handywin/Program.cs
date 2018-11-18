@@ -21,6 +21,16 @@ namespace handywin
         [DllImport("user32.dll")]
         static extern int GetWindowText(IntPtr hWnd, [Out] StringBuilder lpString, int nMaxCount);
 
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        static extern bool SetCursorPos(int x, int y);
+
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern void mouse_event(int dwFlags, int dx, int dy, int cButtons, int dwExtraInfo);
+
+        public const int MOUSEEVENTF_LEFTDOWN = 0x02;
+        public const int MOUSEEVENTF_LEFTUP = 0x04;
+
+
         static bool GetForegroundWindowAndTitle(out IntPtr handle, out string title)
         {
             const int nChars = 256;
@@ -65,10 +75,10 @@ namespace handywin
             }
         }
 
-        static bool WaitForVisualComponentOnScreen(Image vc, out Point point)
+        static bool WaitForVisualComponentOnScreen(Bitmap vc, out Point point)
             => WaitForVisualComponentOnScreen(vc, TimeSpan.FromSeconds(10), out point);
 
-        static bool WaitForVisualComponentOnScreen(Image vc, TimeSpan timeout, out Point point)
+        static bool WaitForVisualComponentOnScreen(Bitmap vc, TimeSpan timeout, out Point point)
         {
             const int intervalMs = 200;
             var interval = TimeSpan.FromMilliseconds(intervalMs);
@@ -79,10 +89,30 @@ namespace handywin
             {
                 if (sc.CaptureScreen() is Bitmap screenBmp)
                 {
-                    
+                    if (screenBmp.SearchAlmostExactMatch(vc, out point))
+                    {
+                        point = new Point(point.X + vc.Width / 2, point.Y + vc.Height / 2);
+                        return true;
+                    }
+                    Thread.Sleep(interval);
                 }
-                Thread.Sleep(interval);
+                else
+                {
+                    point = default(Point);
+                    return false;
+                }
             }
+        }
+
+        private static void MouseClick(Point point)
+            => MouseClick(point.X, point.Y);
+
+        private static void MouseClick(int xpos, int ypos)
+        {
+            //https://stackoverflow.com/questions/8272681/how-can-i-simulate-a-mouse-click-at-a-certain-position-on-the-screen
+            SetCursorPos(xpos, ypos);
+            mouse_event(MOUSEEVENTF_LEFTDOWN, xpos, ypos, 0, 0);
+            mouse_event(MOUSEEVENTF_LEFTUP, xpos, ypos, 0, 0);
         }
 
         [STAThread]
@@ -91,14 +121,22 @@ namespace handywin
             if (Clipboard.ContainsImage())
             {
                 Process.Start("microsoft-edge:http://images.bing.com");
-                //Process.Start("iexplore.exe", "http://images.bing.com");
-                if (WaitForForeground("Bing Image Trending", TimeSpan.FromSeconds(10),
+                if (WaitForForeground("Bing Image", TimeSpan.FromSeconds(10),
                     out var handle, out var actualTitle))
                 {
                     var cam = Properties.Resources.camera;
                     if (WaitForVisualComponentOnScreen(cam, out var point))
                     {
+                        MouseClick(point);
 
+                        var paste = Properties.Resources.pasteImageOrUrl;
+                        if (WaitForVisualComponentOnScreen(paste, out point))
+                        {
+                            MouseClick(point);
+
+                            var sim = new InputSimulator();
+                            sim.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
+                        }
                     }
                 }
             }
