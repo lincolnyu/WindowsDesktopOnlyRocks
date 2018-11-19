@@ -87,7 +87,8 @@ namespace handywin
             {
                 if (sc.CaptureScreen() is Bitmap screenBmp)
                 {
-                    if (screenBmp.SearchAlmostExactMatch(vc, out point))
+                    if (screenBmp.Search(vc, out point))
+                    //if (screenBmp.SearchAlmostExactMatch(vc, out point))
                     {
                         point = new Point(point.X + vc.Width / 2, point.Y + vc.Height / 2);
                         return true;
