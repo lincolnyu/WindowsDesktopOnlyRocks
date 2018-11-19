@@ -5,10 +5,11 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using System.Windows;
+using System.Windows.Forms;
 using WindorLib;
 using WindowsInput;
 using WindowsInput.Native;
+using Clipboard = System.Windows.Clipboard;
 
 namespace handywin
 {
@@ -85,13 +86,14 @@ namespace handywin
             var sc = new ScreenCapture();
             while (true)
             {
-                if (sc.CaptureScreen() is Bitmap screenBmp)
+                if (sc.CaptureScreen() is Bitmap screenBmp
+                    && screenBmp.SearchAlmostExactMatch(vc, out point))
                 {
-                    if (screenBmp.SearchAlmostExactMatch(vc, out point))
-                    {
-                        point = new Point(point.X + vc.Width / 2, point.Y + vc.Height / 2);
-                        return true;
-                    }
+                    point = new Point(point.X + vc.Width / 2, point.Y + vc.Height / 2);
+                    return true;
+                }
+                if (DateTime.UtcNow - start + interval <= timeout)
+                {
                     Thread.Sleep(interval);
                 }
                 else
@@ -135,7 +137,19 @@ namespace handywin
                             var sim = new InputSimulator();
                             sim.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
                         }
+                        else
+                        {
+                            MessageBox.Show("Unable to locate the 'Paste Image or URL' button.", "handywin");
+                        }
                     }
+                    else
+                    {
+                        MessageBox.Show("Unable to locate the 'Camera' button.", "handywin");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Unable to locate the browser with 'Bing Image' page.", "handywin");
                 }
             }
             else if (Clipboard.ContainsText())
@@ -160,6 +174,10 @@ namespace handywin
                         sim.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
                     }
                 }
+            }
+            else
+            {
+                MessageBox.Show("Clipboard doesn't contain data to action on.", "handywin");
             }
         }
     }
