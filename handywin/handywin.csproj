@@ -60,7 +60,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ScreenCapture.cs" />
-    <Compile Include="tests\ImageMatchTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -87,10 +86,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="resources\pasteImageOrUrl.png" />
-    <Content Include="tests\images\bing-image-search-1%282%29.png" />
-    <Content Include="tests\images\bing-image-search-1.png" />
-    <Content Include="tests\images\bing-image-search-2%282%29.png" />
-    <Content Include="tests\images\bing-image-search-2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
