@@ -4,77 +4,51 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{10CF987E-8650-4028-A7E3-C6EF48A6C4C5}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
-    <RootNamespace>handywin</RootNamespace>
-    <AssemblyName>handywin</AssemblyName>
+    <ProjectGuid>{31062EAE-0903-41F3-B3F3-C50A7A2538D1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ImageMatcherLib.Tests</RootNamespace>
+    <AssemblyName>ImageMatcherLib.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;/t:winexe</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;/t:winexe</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsInput, Version=1.0.4.0, Culture=neutral, PublicKeyToken=9b287f7dc5073cad, processorArchitecture=MSIL">
-      <HintPath>..\packages\InputSimulator.1.0.4.0\lib\net20\WindowsInput.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="ImageMatchTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ScreenCapture.cs" />
-    <Compile Include="tests\ImageMatchTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ImageMatcherLib\ImageMatcherLib.csproj">
-      <Project>{206bd5b2-00e0-498c-8dc1-1aefd3611fa9}</Project>
-      <Name>ImageMatcherLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WindorLib\WindorLib.csproj">
-      <Project>{735CC8F3-00CB-49B0-ADC1-BD2F2B1047F3}</Project>
-      <Name>WindorLib</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -83,14 +57,28 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="resources\camera.png" />
+    <None Include="Resources\bing-image-search-1%282%29.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="resources\pasteImageOrUrl.png" />
-    <Content Include="tests\images\bing-image-search-1%282%29.png" />
-    <Content Include="tests\images\bing-image-search-1.png" />
-    <Content Include="tests\images\bing-image-search-2%282%29.png" />
-    <Content Include="tests\images\bing-image-search-2.png" />
+    <None Include="Resources\bing-image-search-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bing-image-search-2%282%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\bing-image-search-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ImageMatcherLib\ImageMatcherLib.csproj">
+      <Project>{206bd5b2-00e0-498c-8dc1-1aefd3611fa9}</Project>
+      <Name>ImageMatcherLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\camera.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pasteImageOrUrl.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
