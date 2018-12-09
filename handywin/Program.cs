@@ -1,3 +1,4 @@
+using ImageMatcherLib;
 using ScreenShotDemo;
 using System;
 using System.Diagnostics;

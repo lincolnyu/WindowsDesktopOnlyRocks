@@ -1,147 +1,11 @@
 ﻿using System;
 using System.Drawing;
 
-namespace handywin
+namespace ImageMatcherLib
 {
     public static class ImageMatchHelper
     {
-        static double RgbToY(Color clr)
-        {
-            return 16 + (65.481 * clr.R + 128.533 * clr.G + 24.966 * clr.B) / 255;
-        }
-
-        public static bool SearchAlmostExactMatch(this Bitmap ss, Bitmap target,
-             out Point point)
-            => SearchAlmostExactMatch(ss, target, 3 * 3, out point);
-
-        // TODO optimize...
-        public static bool SearchAlmostExactMatch(this Bitmap ss, Bitmap target,
-             double mseThr, out Point point)
-        {
-            var srcWidth = ss.Width;
-            var srcHeight = ss.Height;
-            var tgtWidth = target.Width;
-            var tgtHeight = target.Height;
-            var tgtQW = tgtWidth / 4;
-            var tgtQH = tgtHeight / 4;
-            var tgtQ3W = tgtWidth * 3 / 4;
-            var tgtQ3H = tgtHeight * 3 / 4;
-            var tgtHW = tgtWidth / 2;
-            var tgtHH = tgtHeight / 2;
-            var tgtArea = tgtWidth * tgtHeight;
-
-            for (var i = 0; i < srcWidth - tgtWidth; i++)
-            {
-                for (var j = 0; j < srcHeight - tgtHeight; j++)
-                {
-                    double mse = 0;
-                    double thr = 0;
-                    bool matching = true;
-                    for (var x = 0; x < tgtWidth && matching; x++)
-                    {
-                        for (var y = 0; y < tgtHeight && matching; y++)
-                        {
-                            var yss = RgbToY(ss.GetPixel(i + x, j + y));
-                            var ytgt = RgbToY(target.GetPixel(x, y));
-                            var d = yss - ytgt;
-                            mse += d * d;
-                            thr += mseThr;
-                            if (mse > thr)
-                            {
-                                matching = false;
-                            }
-                        }
-                    }
-                    if (!matching)
-                    {
-                        continue;
-                    }
-                    mse /= tgtArea;
-                    if (mse < mseThr)
-                    {
-                        point = new Point(i, j);
-                        return true;
-                    }
-                }
-            }
-            point = default(Point);
-            return false;
-        }
-
-        private class GreyImage
-        {
-            public GreyImage(Bitmap bmp, int xpadding = 1, int ypadding = 1)
-            {
-                Width = bmp.Width;
-                Height = bmp.Height;
-                _data = new byte[bmp.Height + ypadding, bmp.Width + xpadding];
-                for (var i = 0; i < bmp.Height; i++)
-                {
-                    for (var j = 0; j < bmp.Width; j++)
-                    {
-                        _data[i, j] = (byte)
-                             Math.Min(Math.Round(RgbToY(bmp.GetPixel(j, i))), 255);
-                    }
-                    for (var j = bmp.Width; j < bmp.Width + xpadding; j++)
-                    {
-                        _data[i, j] = _data[i, bmp.Width - 1];
-                    }
-                }
-                for (var i = bmp.Height; i < bmp.Height + ypadding; i++)
-                {
-                    for (var j = 0; j < bmp.Width + xpadding; j++)
-                    {
-                        _data[i, j] = _data[bmp.Height - 1, j];
-                    }
-                }
-            }
-
-            public byte this[int x, int y] => _data[y, x];
-            public int Height { get; }
-            public int Width { get; }
-
-            byte[,] _data;
-        }
-
-        static uint ModAdd(uint a, uint b)
-            => (a <= uint.MaxValue - b) ? a + b : a - (uint.MaxValue - b) - 1;
-
-        static uint ModSub(uint a, uint b)
-            => (a > b) ? a - b : b - a;
-
-        class HistoMap
-        {
-            public HistoMap(GreyImage gi)
-            {
-                _data = new uint[gi.Height + 1, gi.Width + 1];
-                for (var i = 1; i < gi.Height; i++)
-                {
-                    for (var j = 1; j < gi.Width; j++)
-                    {
-                        _data[i, j] = ModAdd(ModSub(ModAdd(_data[i, j - 1], _data[i - 1, j]), _data[i - 1, j - 1]), gi[i - 1, j - 1]);
-                    }
-                }
-            }
-
-            public float GetHisto(Rectangle rect)
-            {
-                var sum = (float)GetSum(rect);
-                return sum / (rect.Width * rect.Height);
-            }
-
-            public uint GetSum(Rectangle rect)
-            {
-                var b = _data[rect.Y, rect.X];
-                var bx = _data[rect.Y, rect.X + rect.Width];
-                var by = _data[rect.Y + rect.Height, rect.X];
-                var bxy = _data[rect.Y + rect.Height, rect.X + rect.Width];
-                return ModSub(ModAdd(bxy, b), ModAdd(bx, by));
-            }
-
-            uint[,] _data;
-        }
-
-        public static bool Search(this Bitmap src, Bitmap blk, ref double mseLow, out Point location)
+         public static bool Search(this Bitmap src, Bitmap blk, ref double mseLow, out Point location)
         {
             var giSrc = new GreyImage(src);
             var giBlk = new GreyImage(blk);
@@ -322,7 +186,11 @@ namespace handywin
             return result;
         }
 
-        static bool MseLower(GreyImage src, int x, int y, GreyImage blk,
+        /**
+         * Pre: src is right and bottom 1 row padded 
+         *      r no greater than 2
+         * */
+        public static bool MseLower(GreyImage src, int x, int y, GreyImage blk,
             double r, ref double mseLow)
         {
             double mse = 0;

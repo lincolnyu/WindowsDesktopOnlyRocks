@@ -42,6 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlmostExactMatchHelper.cs" />
+    <Compile Include="GreyImage.cs" />
+    <Compile Include="GreyPyramidMatchHelper.cs" />
+    <Compile Include="HistoMap.cs" />
+    <Compile Include="ImageHelper.cs" />
     <Compile Include="ImageMatchHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
