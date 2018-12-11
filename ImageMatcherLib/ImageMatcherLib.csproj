@@ -49,6 +49,7 @@
     <Compile Include="ImageHelper.cs" />
     <Compile Include="ImageMatchHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Pyramid.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

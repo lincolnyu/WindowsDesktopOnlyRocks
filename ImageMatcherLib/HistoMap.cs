@@ -4,19 +4,25 @@ namespace ImageMatcherLib
 {
     using static ImageHelper;
 
-    class HistoMap
+    public class HistoMap
     {
         public HistoMap(GreyImage gi)
         {
+            UnderlyingImage = gi;
             _data = new uint[gi.Height + 1, gi.Width + 1];
-            for (var i = 1; i < gi.Height; i++)
+            for (var i = 1; i <= gi.Height; i++)
             {
-                for (var j = 1; j < gi.Width; j++)
+                for (var j = 1; j <= gi.Width; j++)
                 {
                     _data[i, j] = ModAdd(ModSub(ModAdd(_data[i, j - 1], _data[i - 1, j]), _data[i - 1, j - 1]), gi[i - 1, j - 1]);
                 }
             }
         }
+
+        public GreyImage UnderlyingImage { get; }
+
+        public int Width => UnderlyingImage.Width;
+        public int Height => UnderlyingImage.Height;
 
         public float GetHisto(Rectangle rect)
         {

@@ -14,5 +14,20 @@ namespace ImageMatcherLib
 
         public static uint ModSub(uint a, uint b)
             => (a > b) ? a - b : b - a;
+
+        public static double GetAverage(this GreyImage gi)
+        {
+            double avg = 0.0;
+            var area = gi.Width * gi.Height;
+            for (var i = 0; i < gi.Height; i++)
+            {
+                for (var j = 0; j < gi.Width; j++)
+                {
+                    avg += gi[i, j];
+                }
+            }
+            avg /= area;
+            return avg;
+        }
     }
 }

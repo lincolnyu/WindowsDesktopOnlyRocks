@@ -27,6 +27,7 @@
         private static bool Search(GreyImage giSrc, GreyImage giKey, ref double mseLow, out Rectangle location)
         {
             var histo = new HistoMap(giSrc);
+            var keyAvg = giKey.GetAverage();
 
             throw new NotImplementedException();
         }
